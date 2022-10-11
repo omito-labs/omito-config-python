@@ -8,8 +8,11 @@ on:
       - "!*"
 
 jobs:
-  setup:
+  release:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package: ["core"]
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -19,12 +22,6 @@ jobs:
         with:
           python-version: 3.9
 
-      - name: cache poetry installation
-        uses: actions/cache@v3
-        with:
-          path: ~/.local
-          key: poetry-1.2.1
-
       - name: install poetry
         uses: snok/install-poetry@v1
         with:
@@ -33,13 +30,6 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
 
-  release:
-    needs: [setup]
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        package: ["core"]
-    steps:
       - uses: dorny/paths-filter@v2
         id: changes
         with:

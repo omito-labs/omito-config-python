@@ -8,11 +8,8 @@ on:
       - "!*"
 
 jobs:
-  release:
+  setup:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        package: ["core"]
     steps:
       - name: checkout
         uses: actions/checkout@v2
@@ -36,24 +33,37 @@ jobs:
           virtualenvs-in-project: true
           installer-parallel: true
 
+  release:
+    needs: [setup]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package: ["core"]
+    steps:
       - uses: dorny/paths-filter@v2
         id: changes
         with:
+          list-files: ""
           filters: |
             src:
               - './${{ matrix.package }}/**'
 
       - name: install dependencies
-        if: steps.changes.outputs.src == 'true'
+        # if: steps.changes.outputs.src == 'true'
         run: poetry install --no-interaction --no-root
         working-directory: ./${{ matrix.package }}
 
       - name: install project dependencies
-        if: steps.changes.outputs.src == 'true'
+        # if: steps.changes.outputs.src == 'true'
         run: poetry install --no-interaction
         working-directory: ./${{ matrix.package }}
 
       - name: test
-        if: steps.changes.outputs.src == 'true'
-        run: poetry run poe test
+        # if: steps.changes.outputs.src == 'true'
+        run: poetry run pytest -p no:sugar
+        working-directory: ./${{ matrix.package }}
+
+      - name: publish
+        # if: steps.changes.outputs.src == 'true'
+        run: "poetry publish --build --username ${{ secrets.PYPI_USERNAME }} --password ${{ secrets.PYPI_PASSWORD }}"
         working-directory: ./${{ matrix.package }}

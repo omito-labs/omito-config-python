@@ -5,7 +5,7 @@ from typing import Dict, List, Any, TypeVar, Type
 from deepmerge import always_merger
 from flatten_dict import flatten, unflatten, reducers
 import re
-from strong_config_core.base_plugin import BasePlugin
+from base_plugin import BasePlugin
 
 load_dotenv()
 T = TypeVar('T')

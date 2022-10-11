@@ -3,8 +3,8 @@ import sys
 sys.path.append('./src')
 sys.path.append('./test')
 
-from strong_config_core.base_plugin import BasePlugin
-from strong_config_core.main import load_config
+from base_plugin import BasePlugin
+from main import load_config
 import pytest
 import os
 from schematics.models import Model

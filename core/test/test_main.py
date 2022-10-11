@@ -31,6 +31,17 @@ def test_loads_empty(fs):
   assert config.person == None
 
 
+def test_default_config(fs):
+  os.environ['PYTHON_ENV'] = 'test'
+  default_config_file = '''
+  person:
+    name: Alice
+  '''
+  fs.create_file('/config/default.yml', contents=default_config_file)
+  config = load_config(Schema, config_dir='/config')
+  assert config.person.name == 'Alice'
+
+
 def test_override(fs):
   os.environ['PYTHON_ENV'] = 'test'
   default_config_file = '''

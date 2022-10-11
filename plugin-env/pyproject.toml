@@ -1,16 +1,12 @@
 [tool.poetry]
-name = "omito-config-core"
-version = "0.1.7"
+name = "omito-config-plugin-env"
+version = "0.1.1"
 description = ""
 authors = ["Barath Kumar <barath@mergedup.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.9"
-python-dotenv = "^0.21.0"
-PyYAML = "^6.0"
-deepmerge = "^1.0.1"
-flatten-dict = "^0.4.2"
-schematics = "^2.1.1"
+omito-config-core = "^0.1.5"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.1.3"

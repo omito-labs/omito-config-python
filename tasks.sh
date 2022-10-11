@@ -9,7 +9,7 @@ version() {
   for dir in $dirs; do
     package=$(echo ${dir} | sed 's:/*$::')
     changes=$(git status --porcelain ${package})
-    if [ -z "$package" ]; then
+    if [ -z "$changes" ]; then
       echo "no changes to package ${package}"
     else
       echo "bumping version for package ${package}"

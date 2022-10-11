@@ -6,9 +6,17 @@
 # @cmd bump versions
 version() {
   dirs=$(ls -d -- */)
-  for file in $dirs; do
-    package=$(echo $file | sed 's:/*$::')
-    echo "bumping version for package ${package}"
+  for dir in $dirs; do
+    package=$(echo ${dir} | sed 's:/*$::')
+    changes=$(git status --porcelain ${package})
+    if [ -z "$package" ]; then
+      echo "no changes to package ${package}"
+    else
+      echo "bumping version for package ${package}"
+      pushd ./${package}
+      poetry version patch
+      popd
+    fi
   done
 }
 

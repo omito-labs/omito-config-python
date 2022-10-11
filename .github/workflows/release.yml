@@ -21,7 +21,7 @@ jobs:
         with:
           filters: |
             src:
-              - '/${{ matrix.package }}/**'
+              - '${{ matrix.package }}/**'
       - name: install python
         uses: actions/setup-python@v4
         if: steps.changes.outputs.src == 'true'
@@ -50,7 +50,7 @@ jobs:
       - name: install dependencies
         run: poetry install --no-interaction --no-root
         working-directory: ./${{ matrix.package }}
-        if: steps.cache-deps.outputs.cache-hit != 'true'
+        if: steps.cache-deps.outputs.cache-hit != 'true' && steps.changes.outputs.src == 'true'
       - name: install project dependencies
         if: steps.changes.outputs.src == 'true'
         run: poetry install --no-interaction

@@ -1,0 +1,61 @@
+name: release
+
+on:
+  push:
+    branches:
+      - main
+    tags:
+      - "!*"
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package: ["core"]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - name: check changes
+        uses: dorny/paths-filter@v2
+        with:
+          filters: |
+            src:
+              - '/${{ matrix.package }}/**'
+      - name: install python
+        uses: actions/setup-python@v4
+        if: steps.changes.outputs.src == 'true'
+        with:
+          python-version: 3.9
+      - name: cache poetry installation
+        uses: actions/cache@v3
+        if: steps.changes.outputs.src == 'true'
+        with:
+          path: ~/.local
+          key: poetry-1.2.1
+      - name: install poetry
+        uses: snok/install-poetry@v1
+        if: steps.changes.outputs.src == 'true'
+        with:
+          version: 1.2.1
+          virtualenvs-create: true
+          virtualenvs-in-project: true
+          installer-parallel: true
+      - name: cache dependencies
+        uses: actions/cache@v3
+        if: steps.changes.outputs.src == 'true'
+        with:
+          path: .venv
+          key: pydeps-${{ hashFiles('**/poetry.lock') }}
+      - name: install dependencies
+        run: poetry install --no-interaction --no-root
+        working-directory: ./${{ matrix.package }}
+        if: steps.cache-deps.outputs.cache-hit != 'true'
+      - name: install project dependencies
+        if: steps.changes.outputs.src == 'true'
+        run: poetry install --no-interaction
+        working-directory: ./${{ matrix.package }}
+      - name: test
+        if: steps.changes.outputs.src == 'true' && steps.changes.outputs.src == 'true'
+        run: poetry run poe test
+        working-directory: ./${{ matrix.package }}

@@ -3,7 +3,6 @@ name = "omito-config-core"
 version = "0.1.4"
 description = ""
 authors = ["Barath Kumar <barath@mergedup.com>"]
-packages = [{include = "src"}]
 
 [tool.poetry.dependencies]
 python = "^3.9"

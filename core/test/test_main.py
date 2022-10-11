@@ -1,10 +1,4 @@
-import sys
-
-sys.path.append('./src')
-sys.path.append('./test')
-
-from base_plugin import BasePlugin
-from main import load_config
+from omito_config_core import BasePlugin, load_config
 import pytest
 import os
 from schematics.models import Model

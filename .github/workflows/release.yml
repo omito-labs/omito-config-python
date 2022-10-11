@@ -25,15 +25,6 @@ jobs:
             src:
               - './${{ matrix.package }}/**'
 
-      - uses: JRubics/poetry-publish@v1.13
-        if: steps.changes.outputs.src == 'true'
-        working-directory: ./${{ matrix.package }}
-        with:
-          python_version: 3.9
-          poetry_version: 1.2.1
-          ignore_dev_requirements: yes
-          pypi_token: ${{ secrets.PYPI_TOKEN }}
-
       - name: install python
         if: steps.changes.outputs.src == 'true'
         uses: actions/setup-python@v4
@@ -48,7 +39,6 @@ jobs:
           virtualenvs-create: true
           virtualenvs-in-project: true
           installer-parallel: true
-      - uses: allanchain/poetry-cache-action@release
 
       - name: install dependencies
         if: steps.changes.outputs.src == 'true'
@@ -63,4 +53,9 @@ jobs:
       - name: test
         if: steps.changes.outputs.src == 'true'
         run: poetry run pytest -p no:sugar
+        working-directory: ./${{ matrix.package }}
+
+      - name: publish
+        if: steps.changes.outputs.src == 'true'
+        run: "poetry publish --build --username __token__ --password ${{ secrets.PYPI_TOKEN }}"
         working-directory: ./${{ matrix.package }}

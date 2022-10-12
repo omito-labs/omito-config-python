@@ -51,7 +51,7 @@ jobs:
         working-directory: ./${{ matrix.package }}
 
       - name: test
-        if: steps.changes.outputs.src == 'true' && ${{ matrix.package }} != 'plugin-aws'
+        if: steps.changes.outputs.src == 'true' && ${{ matrix.package }} == 'plugin-aws'
         run: poetry run pytest -p no:sugar
         working-directory: ./${{ matrix.package }}
 

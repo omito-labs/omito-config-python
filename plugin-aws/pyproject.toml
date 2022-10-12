@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "omito-config-plugin-aws"
-version = "0.1.4"
+version = "0.1.5"
 description = ""
 authors = ["Barath Kumar <barath@mergedup.com>"]
 

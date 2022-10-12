@@ -3,7 +3,6 @@ from schematics.types import StringType
 from omito_config_core import load_config
 import os
 from moto import mock_ssm, mock_secretsmanager
-from omito_config_plugin_aws import SSMPlugin, AWSPlugin
 
 
 class Schema(Model):
@@ -17,6 +16,7 @@ def test_ssm_plugin(fs):
   name: ${ssm:NAME}
   '''
   fs.create_file('/config/default.yml', contents=default_config_file)
+  from omito_config_plugin_aws import SSMPlugin
   config = load_config(Schema, config_dir='/config', plugins=[SSMPlugin()])
   assert config.name == 'Bob'
 
@@ -28,5 +28,6 @@ def test_aws_plugin(fs):
   name: ${aws:bastion/host}
   '''
   fs.create_file('/config/default.yml', contents=default_config_file)
+  from omito_config_plugin_aws import AWSPlugin
   config = load_config(Schema, config_dir='/config', plugins=[AWSPlugin()])
   assert config.name == 'bastion-lb-e9369ce9c6fe48aa.elb.eu-west-2.amazonaws.com'

@@ -9,5 +9,5 @@ class EnvPlugin(BasePlugin):
 
   def get_value(self, key: str):
     if key not in os.environ:
-      raise f'Environment variable {key} is not defined'
+      raise Exception(f'Environment variable {key} is not defined')
     return os.environ[key]

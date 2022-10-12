@@ -11,12 +11,14 @@ version() {
     package=$(echo ${dir} | sed 's:/*$::')
     changes=$(git status --porcelain ${package})
     if [ -z "$changes" ] && [ ! ${argc_force} ]; then
-      echo "no changes to package ${package}"
+      pushd ./${package} > /dev/null
+      echo "no changes to package ${package} [$(poetry version --short)]"
+      popd > /dev/null
     else
-      echo "bumping version for package ${package}"
-      pushd ./${package}
+      echo "[[package ${package}]]"
+      pushd ./${package} > /dev/null
       poetry version patch
-      popd
+      popd > /dev/null
     fi
   done
 }

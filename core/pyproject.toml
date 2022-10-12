@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "omito-config-core"
-version = "0.1.7"
+version = "0.1.10"
 description = ""
 authors = ["Barath Kumar <barath@mergedup.com>"]
 

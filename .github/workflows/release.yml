@@ -12,7 +12,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        package: ["core", "plugin-env"]
+        package: ["core", "plugin-env", "plugin-aws"]
     steps:
       - name: checkout
         uses: actions/checkout@v2
